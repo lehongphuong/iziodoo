@@ -7,17 +7,17 @@ services:
       - db
     ports:
       - "8069:8069"
-    networks:
-      - postgres
     volumes:
       - odoo-web-data:/var/lib/odoo
       - ./config:/etc/odoo
       - ./addons:/mnt/extra-addons
+    networks:
+      - postgres
     restart: unless-stopped
     
   db:
     container_name: postgres_container
-    image: postgres
+    image: postgres:10
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-postgres}
       POSTGRES_USER: ${POSTGRES_USER:-odoo}
