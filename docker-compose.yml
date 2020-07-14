@@ -21,6 +21,4 @@ services:
     image: dpage/pgadmin4
     ports:
       - "5050:5050"
-    networks:
-      - postgres
     restart: unless-stopped
