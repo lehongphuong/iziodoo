@@ -1,27 +1,15 @@
-version: '2'
+version: '3.5'
+
 services:
-  web:
-    image: odoo:13.0
-    depends_on:
-      - postgres
-    ports:
-      - "8069:8069"
-    networks:
-      - postgres
-    volumes:
-      - odoo-web-data:/var/lib/odoo
-      - ./config:/etc/odoo
-      - ./addons:/mnt/extra-addons
-  
   postgres:
     container_name: postgres_container
     image: postgres
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-odoo}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-odoo}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
       PGDATA: /data/postgres
     volumes:
-       - odoo-db-data:/var/lib/postgresql/data/pgdata
+       - postgres:/data/postgres
     ports:
       - "5432:5432"
     networks:
@@ -40,13 +28,12 @@ services:
       - "${PGADMIN_PORT:-5050}:80"
     networks:
       - postgres
-    restart: unless-stopped 
-    
+    restart: unless-stopped
+
 networks:
   postgres:
     driver: bridge
-    
+
 volumes:
-  odoo-web-data:
-  odoo-db-data:
-  pgadmin:
+    postgres:
+    pgadmin:
