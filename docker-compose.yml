@@ -4,7 +4,7 @@ services:
   web:
     image: odoo:13.0
     depends_on:
-      - postgres
+      - db
     ports:
       - "8069:8069"
     networks:
@@ -15,15 +15,16 @@ services:
       - ./addons:/mnt/extra-addons
     restart: unless-stopped
     
-  postgres:
+  db:
     container_name: postgres_container
     image: postgres
     environment:
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
       POSTGRES_USER: ${POSTGRES_USER:-odoo}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-odoo}
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-       - postgres:/var/lib/postgresql/data/pgdata
+       - odoo-db-data:/var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
     networks:
@@ -50,6 +51,6 @@ networks:
 
 volumes:
     odoo-web-data:
-    postgres:
+    odoo-db-data:
     pgadmin:
     
